@@ -3,42 +3,22 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
     <title>Word Race</title>
   </head>
   <body class="container">
     <!-- Header bar with Session Gen and timer -->
-    <div class"row header-div">
-      <div class="header-div col s12 m4 l4">
-        <h4>Word Race<i class="material-icons small">mode_edit</i></h4>
-      </div>
-      <div class="header-div col s12 m4 l4">
-        <button ID="sessionKeyGenBut" class="col s3 waves-effect waves-light btn">Create</button>
-        <div class="input-field inline col 9">
-          <input type="text" ID="sessionKeyGen" value="" placeholder="Name your game">
-        </div>
-      </div>
-      <div class="header-div col s12 m4 l4">
-        <button ID="sessionKeyAcceptBut" class="col s3 waves-effect waves-light btn">Join</button>
-        <div class="input-field inline col 9">
-          <input type="text" ID="sessionKeyAccept" value="" placeholder="Key goes here">
-        </div>
-      </div>
-    </div>
-    <!-- <nav>
-      <header class="nav-wrapper row">
-        <h1 href="#" class="brand-logo col s12 m3 l3">Word Race</h1>
-        <ul id="nav-mobile" class="right col m9 l9" class"row">
-          <li class"col s12 m6 l6">
+    <nav>
+      <header class="nav-wrapper">
+        <h1 href="#" class="brand-logo">Word Race</h1>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li>
             <button ID="sessionKeyGen" class="col s3 waves-effect waves-light btn">Create</button>
             <div class="input-field inline col 9">
               <input type="text" ID="sessionKeyGen" value="" placeholder="Name your game">
             </div>
           </li>
-          <li class"col s12 m6 l6">
+          <li>
             <button ID="sessionKeyAccept" class="col s3 waves-effect waves-light btn">Join</button>
             <div class="input-field inline col 9">
               <input type="text" ID="sessionKeyAccept" value="" placeholder="Key goes here">
@@ -46,14 +26,14 @@
           </li>
       </ul>
       </header>
-    </nav> -->
+    </nav>
     <main class="row">
       <section class="col s12 m4 l4">
         <!-- User's writing -->
         <div class "">
           <h5>Word Count: <span id="user_1_words"></span></h5>
         </div>
-        <textarea id="user_1_text" rows="100" cols="10"></textarea>
+        <textarea id="user_1_text" rows="8" cols="10"></textarea>
       </section>
       <section class="col s12 m4 l4">
         <h6 class="center-align">Timer</h6>
@@ -76,9 +56,9 @@
       <section class="col s12 m4 l4">
         <!-- Partner's writing -->
         <div class "">
-          <h5>Word Count: <span id="user_2_words"></span></h5>
+          <h5>Word Count: <span id="user_1_words"></span></h5>
         </div>
-        <textarea id="user_2_text" name="name" rows="100" cols="10" disabled></textarea>
+        <textarea name="name" rows="8" cols="10" disabled></textarea>
       </section>
     </main>
     <footer class="page-footer">

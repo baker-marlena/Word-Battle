@@ -26,17 +26,3 @@ function sessionGenerator(length){
 $("#sessionKey").click(function(){
   $("sessionKeyOut").val(sessionGenerator(5));
 });
-
-// -----write a new session to the database
-// function writeSessionData(testSession) {
-//   firebase.database().ref(testSession).set({
-//     "user1":{
-//       "textInput":"",
-//       "wordCount":0
-//     },
-//     "timer": true,
-//     "timeSet": 0,
-//     "start": false,
-//     "end":
-//   });
-// }

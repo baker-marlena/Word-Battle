@@ -1,0 +1,16 @@
+/*.col {
+  background-color: red !important;
+}*/
+
+body {
+  font-family: 'Quicksand', sans-serif;
+}
+
+h4 {
+  font-family: 'Arvo', serif;
+
+}
+
+.header-div {
+  display:inline-block !important;
+}
