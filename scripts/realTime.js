@@ -17,6 +17,7 @@ $("#sessionKeyGenBut").click(function (){
   createNewSession(sessionRef);
   currentSession = sessionRef;
   userName = "user_1";
+  setDisabledContent(userName);
 });
 
 function getSessionKey (){
@@ -54,11 +55,10 @@ $("#sessionKeyAcceptBut").click(function(){
   let keyInput = $("#sessionKeyAccept").val();
   currentSession = database.ref(keyInput);
   userName = "user_2";
-  console.log(userName);
+  setDisabledContent(userName);
 })
 
-// ----- Write text to db
-var userInput =
+// ----- capture typing  -- Not working
 $(`#${userName}_text`).keyup(function() {
   currentSession.update({
     [userName]: {
@@ -66,23 +66,21 @@ $(`#${userName}_text`).keyup(function() {
       wordCount: this.value.split(" ").length
     }
   })
+// ----- post text to disable box for other user -- Not working
+  .then(function(snapshot){
+    const data = snapshot.val();
+    $(`#${otherUser}_text`).textContent = data[otherUser].textInput;
+  })
 })
 
-// ----- display other user's content
-// function setDisabledContent (name){
-// ----- Record other user
-//   let otherUser;
-//   if (name == "user_1") {
-//     otherUser = "user_2";
-//   }
-//   if (name == "user_2") {
-//     otherUser = "user_1";
-//   }
-// ----- listen for changes to the other user's text to display on page
-//   $(`#${otherUser}_text`).prop('disabled', true);
-//   var otherUserText = database.ref(`${otherUser}/textInput`);
-//   var otherUserCount = database.ref(`${otherUser}/wordCount`);
-//   otherUserText.on('value', function(snapshot) {
-//     $(`#${otherUser}_text`) (snapshot.val());
-//   });
-// }
+// ----- make other user's content uneditable
+function setDisabledContent (name){
+  let otherUser;
+  if (name == "user_1") {
+    otherUser = "user_2";
+  }
+  if (name == "user_2") {
+    otherUser = "user_1";
+  }
+  $(`#${otherUser}_text`).prop('disabled', true);
+  };
