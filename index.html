@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Word Race</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+  </head>
+  <body class="container">
+    <header>
+      <h1>Word Race</h1>
+    </header>
+    <main>
+      <!-- Session Generation -->
+      <section class="row">
+        <button type="button" ID="sessionKey" name="sessionKey" class="col 3">Generate Session</button>
+        <input type="text" ID="sessionKeyOut" class="col 9" disabled value="http://q1-project-1ce2b.firebaseapp.com/testSession">
+      </section>
+      <!-- Modes and Start Button -->
+      <section class="row">
+        <form class="gameModes row" action="index.html" method="post">
+          <!-- Timer Mode -->
+            <label for="timerSet">Timer</label>
+              <form class = "col 8 row" action="#">
+                <p class = "col 6">
+                  <input checked name="group1" type="radio" id="timerOn" />
+                  <label for="timerOn">On</label>
+                </p>
+                <p class = "col 6">
+                  <input name="group1" type="radio" id="timerOff" />
+                  <label for="timerOff">Off</label>
+                </p>
+              </form>
+            <div class="col 4">
+              Timer
+              <div class="input-field inline">
+                <input id="timer" type="text" class="validate" value="2">
+                <label for="timer" data-error="wrong" data-success="right"></label>
+              </div>
+            </div>
+     <button type="button" name="start" id="start">Start</button>
+     </form>
+      </section>
+      <section class="row">
+        <!-- User's writing -->
+        <textarea name="name" rows="8" cols="80"></textarea>
+        <!-- Partner's writing -->
+        <textarea name="name" rows="8" cols="80" disabled>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</textarea>
+      </section>
+    </main>
+    <!-- JS Links -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+    <script src="scripts/main.js" charset="utf-8"></script>
+  </body>
+</html>
