@@ -1,4 +1,4 @@
-// -----init the real time database
+// -----init the real time database - working
   var config = {
      apiKey: "AIzaSyCoF8-O434tawCarh4eA4ICGnBElYpgYWE",
      databaseURL: "https://q1-project-1ce2b.firebaseio.com/",
@@ -6,11 +6,13 @@
 
 firebase.initializeApp(config);
 
-var database = firebase.database();
+// ---- create global vars
+const database = firebase.database();
 var currentSession;
 var userName;
+var otherUser;
 
-// ----- create a new session
+// ----- create a new session - working
 $("#sessionKeyGenBut").click(function (){
   let sessionKey = getSessionKey();
   let sessionRef = database.ref(sessionKey);
@@ -18,21 +20,27 @@ $("#sessionKeyGenBut").click(function (){
   currentSession = sessionRef;
   userName = "user_1";
   setDisabledContent(userName);
+  listenForTyping(userName);
+  //listenForCount(userName);
+  listenForOther(userName);
+  $("#sessionGenSuccessMessage").text("Success! Refresh to create or join a different session.");
 });
 
 function getSessionKey (){
-  // ----- retrive session key
+  // ----- retrive session key - working
   let newKey = $("#sessionKeyGen").val();
-  // ----- check if session exists in db
-  if (newKey in database) {
-    alert ("That game already exists!");
-  }
-  else{
+  // ----- check if session exists in db - not working
+  // let dataBaseTest = database.equalTo(newKey);
+  // console.log(dataBaseTest);
+  // if (dataBaseTest !== undefined) {
+  //   alert ("That game already exists!");
+  // }
+//  else{
     return newKey;
-  }
+//  }
 }
 
-// -----write a new session to the database
+// -----write a new session to the database - working
 function createNewSession (value){
   value.set({
     user_1:{
@@ -45,37 +53,62 @@ function createNewSession (value){
     },
     timer: true,
     timeSet: 0,
+    timeLeft: 0,
     start: false,
     end: false
   });
 }
 
-// ----- Join session
+// ----- Join session -- working
 $("#sessionKeyAcceptBut").click(function(){
   let keyInput = $("#sessionKeyAccept").val();
   currentSession = database.ref(keyInput);
   userName = "user_2";
-  setDisabledContent(userName);
+  //if ($("user_1_text").prop("disabled") !== true && $("user_2_text").prop("disabled") !== true) {
+    setDisabledContent(userName);
+//  }
+  listenForTyping(userName);
+  //listenForCount(userName);
+  listenForOther(userName);
+  $("#sessionJoinSuccessMessage").text("Success! Refresh to create or join a different session.");
 })
 
-// ----- capture typing  -- Not working
+// ----- capture typing -- working
+function listenForTyping (name){
+  console.log("Listing to you!")
 $(`#${userName}_text`).keyup(function() {
-  currentSession.update({
+  let update = {
     [userName]: {
       textInput: this.value,
       wordCount: this.value.split(" ").length
     }
-  })
-// ----- post text to disable box for other user -- Not working
-  .then(function(snapshot){
-    const data = snapshot.val();
-    $(`#${otherUser}_text`).textContent = data[otherUser].textInput;
-  })
+  };
+  console.log(update);
+  $(`#${userName}_words`).text("Word Count: " +  this.value.split(" ").length);
+  currentSession.update(update);
 })
+}
 
-// ----- make other user's content uneditable
+// ----- listen for other typing -- not working
+function listenForOther (name){
+  console.log("Listing to partner!")
+  currentSession.child(otherUser).on("value", function(snapshot){
+    const data = snapshot.val();
+    console.log (data.textInput);
+    $(`#${otherUser}_text`).val(data.textInput);
+    $(`#${otherUser}_words`).text(data.wordCount);
+  })
+}
+
+// ----- Set
+// function listenForCount (name){
+//   currentSession.child(name).chile(wordCount).on("value", function(snapshot){
+//     $(`#${userName}_words`).textContent = "Word Count: " + this.value;
+//   })
+// }
+
+// ----- make other user's content uneditable -- working
 function setDisabledContent (name){
-  let otherUser;
   if (name == "user_1") {
     otherUser = "user_2";
   }
@@ -83,4 +116,6 @@ function setDisabledContent (name){
     otherUser = "user_1";
   }
   $(`#${otherUser}_text`).prop('disabled', true);
+  $("#sessionKeyGenBut").prop('disabled', true);
+  $("#sessionKeyAcceptBut").prop('disabled', true);
   };

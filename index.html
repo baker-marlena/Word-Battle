@@ -19,12 +19,18 @@
         <button ID="sessionKeyGenBut" class="col s3 waves-effect waves-light btn">Create</button>
         <div class="input-field inline col 9">
           <input type="text" ID="sessionKeyGen" value="" placeholder="Name your game">
+          <small id="sessionGenSuccessMessage">
+
+          </small>
         </div>
       </div>
       <div class="header-div col s12 m4 l4">
         <button ID="sessionKeyAcceptBut" class="col s3 waves-effect waves-light btn">Join</button>
         <div class="input-field inline col 9">
           <input type="text" ID="sessionKeyAccept" value="" placeholder="Key goes here">
+          <small id="sessionJoinSuccessMessage">
+
+          </small>
         </div>
       </div>
     </div>
@@ -70,13 +76,14 @@
             <input id="timer" type="text" class="validate" value="2" placeholder="Enter time">
         </div>
         <div class="row">
-          <button class="col s12 waves-effect waves-light btn" name="start" id="start">Start</button>
+          <button class="col s6 waves-effect waves-light btn" name="start" id="start">Start</button>
+          <button class="col s6 waves-effect waves-light btn" name="clearTimer" id="clearTimer" disabled>End</button>
         </div>
       </section>
       <section class="col s12 m4 l4">
         <!-- Partner's writing -->
         <div class "">
-          <h5>Word Count: <span id="user_2_words"></span></h5>
+          <h5 id="user_2_words">Word Count:</h5>
         </div>
         <textarea id="user_2_text" name="name" rows="100" cols="10"></textarea>
       </section>
