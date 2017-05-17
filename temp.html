@@ -3,78 +3,31 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
     <title>Word Race</title>
   </head>
-  <body class="container">
-    <!-- Header bar with Session Gen and timer -->
-    <nav>
-      <header class="nav-wrapper">
-        <h1 href="#" class="brand-logo">Word Race</h1>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li>
-            <button ID="sessionKeyGen" class="col s3 waves-effect waves-light btn">Create</button>
-            <div class="input-field inline col 9">
-              <input type="text" ID="sessionKeyGen" value="" placeholder="Name your game">
-            </div>
-          </li>
-          <li>
-            <button ID="sessionKeyAccept" class="col s3 waves-effect waves-light btn">Join</button>
-            <div class="input-field inline col 9">
-              <input type="text" ID="sessionKeyAccept" value="" placeholder="Key goes here">
-            </div>
-          </li>
-      </ul>
-      </header>
+  <body class = "container">
+    <nav> <!-- Header bar with Session Gen and timer -->
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo">Word Race<i class="material-icons small right">mode_edit</i></a>
+        <button ID="sessionKeyGenBut" class="col s3 waves-effect waves-light btn">Create</button>
+        <div class="input-field inline col 9">
+          <input type="text" ID="sessionKeyGen" value="" placeholder="Name your game">
+          <small id="sessionGenSuccessMessage"></small>
+        </div>
+      </div>
     </nav>
-    <main class="row">
-      <section class="col s12 m4 l4">
-        <!-- User's writing -->
-        <div class "">
-          <h5>Word Count: <span id="user_1_words"></span></h5>
-        </div>
-        <textarea id="user_1_text" rows="8" cols="10"></textarea>
-      </section>
-      <section class="col s12 m4 l4">
-        <h6 class="center-align">Timer</h6>
-        <form class = "center-align row" action="#">
-          <p class = "col s6">
-            <input checked name="group1" type="radio" id="timerOn" />
-            <label for="timerOn">On</label>
-          </p>
-          <p class = "col s6">
-            <input name="group1" type="radio" id="timerOff" />
-            <label for="timerOff">Off</label>
-          </p>
-        </form>
-            <input id="timer" type="text" class="validate" value="2" placeholder="Enter time">
-        </div>
-        <div class="row">
-          <button class="col s12 waves-effect waves-light btn" name="start" id="start">Start</button>
-        </div>
-      </section>
-      <section class="col s12 m4 l4">
-        <!-- Partner's writing -->
-        <div class "">
-          <h5>Word Count: <span id="user_1_words"></span></h5>
-        </div>
-        <textarea name="name" rows="8" cols="10" disabled></textarea>
-      </section>
-    </main>
-    <footer class="page-footer">
-      <small class"center-align">
-        Copyright (c) 2017 Marlena Baker All Rights Reserved.
-      </small>
-    </footer>
-    <!-- JS Links -->
     <div>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" charset="utf-8"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
       <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js"></script>
       <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-database.js"></script>
       <script src="scripts/realTime.js" charset="utf-8"></script>
-      <script src="scripts/timer.js" charset="utf-8"></script>
-      <script src="scripts/main.js" charset="utf-8"></script>
+      <!-- <script src="scripts/timer.js" charset="utf-8"></script>
+      <script src="scripts/main.js" charset="utf-8"></script> -->
     </div>
   </body>
 </html>

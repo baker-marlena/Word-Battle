@@ -57,7 +57,7 @@
       <section class="col s12 m4 l4">
         <!-- User's writing -->
         <div class "">
-          <h5>Word Count: <span id="user_1_words"></span></h5>
+          <h5 id="user_1_words">Word Count: 0</h5>
         </div>
         <textarea id="user_1_text" rows="100" cols="10"></textarea>
       </section>
@@ -73,17 +73,17 @@
             <label for="timerOff">Off</label>
           </p>
         </form>
-            <input id="timer" type="text" class="validate" value="2" placeholder="Enter time">
+            <input id="timer" type="text" class="validate" value="" placeholder="Enter time">
         </div>
         <div class="row">
-          <button class="col s6 waves-effect waves-light btn" name="start" id="start">Start</button>
+          <button class="col s6 waves-effect waves-light btn" name="start" id="start" disabled>Start</button>
           <button class="col s6 waves-effect waves-light btn" name="clearTimer" id="clearTimer" disabled>End</button>
         </div>
       </section>
       <section class="col s12 m4 l4">
         <!-- Partner's writing -->
         <div class "">
-          <h5 id="user_2_words">Word Count:</h5>
+          <h5 id="user_2_words">Word Count: 0</h5>
         </div>
         <textarea id="user_2_text" name="name" rows="100" cols="10"></textarea>
       </section>
@@ -100,8 +100,8 @@
       <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js"></script>
       <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-database.js"></script>
       <script src="scripts/realTime.js" charset="utf-8"></script>
-      <script src="scripts/timer.js" charset="utf-8"></script>
-      <script src="scripts/main.js" charset="utf-8"></script>
+      <!-- <script src="scripts/timer.js" charset="utf-8"></script>
+      <script src="scripts/main.js" charset="utf-8"></script> -->
     </div>
   </body>
 </html>
