@@ -5,6 +5,13 @@
 body {
   font-family: 'Quicksand', sans-serif;
 }
+.container{
+    width: 90% !important;
+}
+
+.app-tools{
+  padding: 10px;
+}
 
 h4 {
   font-family: 'Arvo', serif;

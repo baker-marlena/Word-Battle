@@ -43,17 +43,17 @@ function createNewSession (value){
   value.set({
     user_1:{
       textInput:"",
-      wordCount:0
+      wordCount:0,
     },
     user_2:{
       textInput:"",
-      wordCount:0
+      wordCount:0,
     },
     timer: true,
     timeSet: 0,
     timeLeft: 0,
     startStatus: false,
-    initilized:false
+    initilized: false
   });
 }
 
@@ -66,24 +66,31 @@ $("#sessionKeyAcceptBut").click(function(){
   $("#sessionJoinSuccessMessage").text("Success! Refresh to create or join a different session.");
 })
 
-// ----- initialize session
+// ----- initialize session - working
 function startSession (name){
   setDisabledContent(name);
   listenForTyping(name);
   listenForOther(name);
   listenToStart();
   currentSession.update({startStatus:false});
-  currentSession.update({initilized:true});
+
 }
 
-// ----- Jlisten for start button -- untested
+// ----- Listen for start button -- working
 $("#start").click(function(){
   let timerInput = $("#timer").val();
-  currentSession.update({startStatus:true,timeSet:timerInput});
-  timerRun();
+  // ----- Check that timer input is valid
+  if (timerInput < 0 || typeof timerInput !== "number" || (timerInput % 1 !== 0)){
+    alert ("Please enter a positive integer for the timer.");
+  }
+  else {
+    currentSession.update({startStatus:true,timeSet:timerInput});
+    currentSession.update({initilized:true});
+    timerRun();
+  }
 });
 
-// ----- listen for end button -- untested
+// ----- listen for end button -- working
 $("#clearTimer").click(function(){
   currentSession.update({startStatus:false});
 })
@@ -134,7 +141,7 @@ function setDisabledContent (name){
   $("#sessionKeyAcceptBut").prop('disabled', true);
   };
 
-  // ----- Database Timer -- untested
+  // ----- Database Timer -- working
   function timerRun () {
     let secs;
     var timerAmmount = currentSession.child('timeSet').once('value').then(function (snapshot){
@@ -153,14 +160,14 @@ function setDisabledContent (name){
       }, 1000);
   };
 
-  // ----- listen to database for timer updates and update user's page -- untested
+  // ----- listen to database for timer updates and update user's page -- working
   function displayTimer () {
     currentSession.child('timeLeft').on("value", function(snapshot){
       $("#timer").val(snapshot.val());
     })
   }
 
-  // ----- end the timer and update start value -- untested
+  // ----- end the timer and update start value -- working
   function endTimer (){
     console.log("Checking timer end:" + timeInterval);
     currentSession.update({startStatus:false});
@@ -171,7 +178,7 @@ function setDisabledContent (name){
     alert ("Time's up!");
   }
 
-  // ----- watching for the start and stop -- untested
+  // ----- watching for the start and stop -- working
   function listenToStart (){
     console.log("Listening for db changes on 'start'");
     currentSession.child('startStatus').on("value", function(snapshot){
@@ -179,15 +186,19 @@ function setDisabledContent (name){
       console.log(currentValue);
       let startButton = $("#start")
       let endButton = $("#clearTimer")
+      // ----- looks up if the session is initalized
       currentSession.child('initilized').once('value').then(function(snapshot){
         let initStatus = snapshot.val();
+        // ----- if the session is started, start the timer and update the buttons
         if (currentValue == true){
           currentSession.update({timeLeft:0});
           displayTimer();
           startButton.prop('disabled', true);
           endButton.prop('disabled', false);
         }
+        // ----- if the session is over, clear the timer and update the buttons
         if (currentValue == false){
+          // ----- skip unless the session is initialized
           if (initStatus == true) {
             clearInterval(timeInterval);
             endTimer();
@@ -197,7 +208,6 @@ function setDisabledContent (name){
           startButton.prop('disabled', false);
           endButton.prop('disabled', true);
         }
-        console.log("Init check is running",initStatus)
       })
     })
   }
