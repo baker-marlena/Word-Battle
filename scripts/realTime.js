@@ -96,11 +96,11 @@ function checkTimerStatus (){
     let currentStatus = snapshot.val();
     if (currentStatus == false){
       $("#timerMain").css("display","none");
-      $("#timerOff").prop("selected",true);
+      $("#timerOff").prop("checked",true);
       }
     if (currentStatus == true) {
       $("#timerMain").css("display","initial");
-      $("#timerOn").prop("selected",false);
+      $("#timerOn").prop("checked",true);
       }
     })
   }
@@ -186,7 +186,7 @@ function setDisabledContent (name){
       currentSession.update({timeLeft:`${calculateMintues(secs)}:${calculateSeconds(secs)}`});
       // timer runs out
       if(secs == 0){
-        endTimer();
+        currentSession.update({startStatus:false});
         }
       }, 1000);
   };
@@ -201,12 +201,12 @@ function setDisabledContent (name){
   // ----- end the timer and update start value -- working
   function endTimer (){
     console.log("Checking timer end:" + timeInterval);
-    currentSession.update({startStatus:false});
+
     // ----- set timer field to last entered value
     let timerValueSet = currentSession.child('timeSet').once('value').then(function(snapshot){
           $("#timer").val(snapshot.val());
     })
-    alert ("Time's up!");
+    Materialize.toast("Time's up!", 6000);
   }
 
   // ----- watching for the start and stop -- working

@@ -11,25 +11,27 @@
     <title>Word Race</title>
   </head>
   <body class = "container">
-    <header class = "row">
-      <h4 class = "col s12 m4 l4">Word Race<i class="material-icons small">mode_edit</i></h4>
-      <div class="row col s12 m4 l4">
+    <header class = "">
+      <h4 class = "center-align">Word Race<i class="material-icons small">mode_edit</i></h4>
+    </header>
+    <div class="row">
+      <div class="row col s12 m6 l4 left">
         <button ID="sessionKeyGenBut" class="col s4 waves-effect waves-light btn">Create</button>
         <div class="input-field inline col 8">
           <input type="text" ID="sessionKeyGen" value="" placeholder="Create a new session." />
           <small id="sessionGenSuccessMessage"></small>
         </div>
       </div>
-      <div class="row col s12 m4 l4">
+      <div class="row col s12 m6 l4 right">
         <button ID="sessionKeyAcceptBut" class="col s4 waves-effect waves-light btn">Join</button>
         <div class="input-field inline col 8">
           <input type="text" ID="sessionKeyAccept" value="" placeholder="Join a session.">
           <small id="sessionJoinSuccessMessage"></small>
         </div>
       </div>
-    </header>
+    </div>
     <main class = "row">
-      <div class="col s12 m4 l4 card light-grey darken-1">
+      <div class="col s12 m12 l4 card light-grey darken-1">
         <div class="card-content black-text">
           <span id="user_1_words" class="card-title">Word Count: 0</span>
           <small id="user_1_text_prompt"></small>
@@ -39,13 +41,13 @@
           <textarea id="user_1_text" class="userInputBox" rows="1000" cols="10"></textarea>
         </div>
       </div>
-      <section class="card blue-grey lighten-5 col s12 m4 l4">
+      <section class="card blue-grey lighten-5 col s12 m12 l4">
         <div class="card-content teal-text darken3">
           <ol>
             <li>One user should create a session.</li>
             <li>The other user should get the session name and use it to join that session.</li>
             <li>Please copy out your writing before leaving the page.</li>
-            <li>Session names may be reused, but will make a clean session.</li>
+            <li>Session names may be reused, but will clear the existing one.</li>
             <li>Happy writing!</li>
           </ol>
           <span class="card-title">Timer</span>
@@ -71,7 +73,7 @@
             </div>
           </div>
       </section>
-      <div class="col s12 m4 l4 card light-grey darken-1 writing-card">
+      <div class="col s12 m12 l4 card light-grey darken-1 writing-card">
         <div class="card-content black-text">
           <span id="user_2_words" class="card-title">Word Count: 0</span>
           <small id="user_2_text_prompt"></small>

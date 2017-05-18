@@ -4,16 +4,20 @@
 
 body {
   font-family: 'Quicksand', sans-serif;
-  height:100vh !important;
+  /*height:100vh !important;*/
   margin: 0px;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 .container{
     width: 90vw !important;
 }
 
 main {
-  height: 70%;
+  /*height: 70%;*/
   overflow:none;
+  flex: 1 0 auto;
 }
 
 .writing-card{
@@ -26,6 +30,8 @@ main {
   border: 1px solid #b2dfdb;
 	padding: 5px;
   font-family: 'Quicksand', sans-serif;
+  height: 50vh;
+  max-width: 100%;
 }
 
 .userInputBox :focus {
@@ -39,4 +45,10 @@ h4 {
 
 .header-div {
   display:inline-block !important;
+}
+
+@media (max-width: 992px) {
+  .userInputBox {
+    height: 10vh !important;
+  }
 }
