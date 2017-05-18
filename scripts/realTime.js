@@ -21,6 +21,8 @@ $("#sessionKeyGenBut").click(function (){
   userName = "user_1";
   createNewSession(sessionRef);
   startSession(userName);
+  $("#user_1_text_prompt").text("You'll type here.");
+  $("#user_2_text_prompt").text("Your partner will type here.");
   $("#sessionGenSuccessMessage").text("Success! Refresh to create or join a different session.");
 });
 
@@ -63,6 +65,8 @@ $("#sessionKeyAcceptBut").click(function(){
   currentSession = database.ref(keyInput);
   userName = "user_2";
   startSession(userName);
+  $("#user_2_text_prompt").text("You'll type here.");
+  $("#user_1_text_prompt").text("Your partner will type here.");
   $("#sessionJoinSuccessMessage").text("Success! Refresh to create or join a different session.");
 })
 
@@ -72,16 +76,42 @@ function startSession (name){
   listenForTyping(name);
   listenForOther(name);
   listenToStart();
+  checkTimerStatus();
   currentSession.update({startStatus:false});
 
 }
 
+// ----- check if timer is active and save to db-- not working
+$("#timerOn").click(function(){
+  currentSession.update({timer:true})
+})
+
+$("#timerOff").click(function(){
+  currentSession.update({timer:false})
+})
+
+// ----- listen for changes to timer status in db and hide timer on page
+function checkTimerStatus (){
+  currentSession.child("timer").on("value", function(snapshot){
+    let currentStatus = snapshot.val();
+    if (currentStatus == false){
+      $("#timerMain").css("display","none");
+      $("#timerOff").prop("selected",true);
+      }
+    if (currentStatus == true) {
+      $("#timerMain").css("display","initial");
+      $("#timerOn").prop("selected",false);
+      }
+    })
+  }
+
 // ----- Listen for start button -- working
 $("#start").click(function(){
-  let timerInput = $("#timer").val();
+  let timerInput = Number($("#timer").val());
   // ----- Check that timer input is valid
-  if (timerInput < 0 || typeof timerInput !== "number" || (timerInput % 1 !== 0)){
-    alert ("Please enter a positive integer for the timer.");
+  console.log(timerInput);
+  if (timerInput < 0 || (timerInput % 1) !== 0){
+    alert ("Please enter a positive, whole number of minutes.");
   }
   else {
     currentSession.update({startStatus:true,timeSet:timerInput});
@@ -98,7 +128,8 @@ $("#clearTimer").click(function(){
 // ----- capture typing -- working
 function listenForTyping (name){
   console.log("Listing to you!")
-$(`#${userName}_text`).keyup(function() {
+$(`#${name}_text`).keypress(function() {
+  console.log("keyup val:"+this.value)
   let update = {
     [userName]: {
       textInput: this.value,
@@ -116,7 +147,7 @@ function listenForOther (name){
   currentSession.child(otherUser).on("value", function(snapshot){
     const data = snapshot.val();
     console.log (data.textInput);
-    $(`#${otherUser}_text`).val(data.textInput);
+    $(`#${otherUser}_text`).text(data.textInput);
     $(`#${otherUser}_words`).text("Word Count: " + data.wordCount);
   })
 }
@@ -136,7 +167,7 @@ function setDisabledContent (name){
   if (name == "user_2") {
     otherUser = "user_1";
   }
-  $(`#${otherUser}_text`).prop('disabled', true);
+  $(`#${otherUser}_text`).prop('contenteditable', false);
   $("#sessionKeyGenBut").prop('disabled', true);
   $("#sessionKeyAcceptBut").prop('disabled', true);
   };

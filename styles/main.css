@@ -4,13 +4,32 @@
 
 body {
   font-family: 'Quicksand', sans-serif;
+  height:100vh !important;
+  margin: 0px;
 }
 .container{
-    width: 90% !important;
+    width: 90vw !important;
 }
 
-.app-tools{
-  padding: 10px;
+main {
+  height: 70%;
+  overflow:none;
+}
+
+.writing-card{
+  min-height: 100%;
+  overflow:none;
+  overflow-x: none;
+}
+
+.userInputBox {
+  border: 1px solid #b2dfdb;
+	padding: 5px;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.userInputBox :focus {
+  border: 3px solid #26a69a;
 }
 
 h4 {

@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
@@ -9,99 +10,91 @@
     <link rel="stylesheet" href="styles/main.css">
     <title>Word Race</title>
   </head>
-  <body class="container">
-    <!-- Header bar with Session Gen and timer -->
-    <div class"row header-div">
-      <div class="header-div col s12 m4 l4">
-        <h4>Word Race<i class="material-icons small">mode_edit</i></h4>
-      </div>
-      <div class="header-div col s12 m4 l4">
-        <button ID="sessionKeyGenBut" class="col s3 waves-effect waves-light btn">Create</button>
-        <div class="input-field inline col 9">
-          <input type="text" ID="sessionKeyGen" value="" placeholder="Name your game">
-          <small id="sessionGenSuccessMessage">
-
-          </small>
+  <body class = "container">
+    <header class = "row">
+      <h4 class = "col s12 m4 l4">Word Race<i class="material-icons small">mode_edit</i></h4>
+      <div class="row col s12 m4 l4">
+        <button ID="sessionKeyGenBut" class="col s4 waves-effect waves-light btn">Create</button>
+        <div class="input-field inline col 8">
+          <input type="text" ID="sessionKeyGen" value="" placeholder="Create a new session." />
+          <small id="sessionGenSuccessMessage"></small>
         </div>
       </div>
-      <div class="header-div col s12 m4 l4">
-        <button ID="sessionKeyAcceptBut" class="col s3 waves-effect waves-light btn">Join</button>
-        <div class="input-field inline col 9">
-          <input type="text" ID="sessionKeyAccept" value="" placeholder="Key goes here">
-          <small id="sessionJoinSuccessMessage">
-
-          </small>
+      <div class="row col s12 m4 l4">
+        <button ID="sessionKeyAcceptBut" class="col s4 waves-effect waves-light btn">Join</button>
+        <div class="input-field inline col 8">
+          <input type="text" ID="sessionKeyAccept" value="" placeholder="Join a session.">
+          <small id="sessionJoinSuccessMessage"></small>
         </div>
       </div>
-    </div>
-    <!-- <nav>
-      <header class="nav-wrapper row">
-        <h1 href="#" class="brand-logo col s12 m3 l3">Word Race</h1>
-        <ul id="nav-mobile" class="right col m9 l9" class"row">
-          <li class"col s12 m6 l6">
-            <button ID="sessionKeyGen" class="col s3 waves-effect waves-light btn">Create</button>
-            <div class="input-field inline col 9">
-              <input type="text" ID="sessionKeyGen" value="" placeholder="Name your game">
+    </header>
+    <main class = "row">
+      <div class="col s12 m4 l4 card light-grey darken-1">
+        <div class="card-content black-text">
+          <span id="user_1_words" class="card-title">Word Count: 0</span>
+          <small id="user_1_text_prompt"></small>
+          <!-- <div class="writing-space">
+            <p id="user_1_text" contenteditable="true"></p>
+          </div> -->
+          <textarea id="user_1_text" class="userInputBox" rows="1000" cols="10"></textarea>
+        </div>
+      </div>
+      <section class="card blue-grey lighten-5 col s12 m4 l4">
+        <div class="card-content teal-text darken3">
+          <ol>
+            <li>One user should create a session.</li>
+            <li>The other user should get the session name and use it to join that session.</li>
+            <li>Please copy out your writing before leaving the page.</li>
+            <li>Session names may be reused, but will make a clean session.</li>
+            <li>Happy writing!</li>
+          </ol>
+          <span class="card-title">Timer</span>
+          <form id="timerStatusSet" class = "center-align row" action="#">
+            <p class = "col s6">
+              <input checked name="group1" type="radio" data-status="true" id="timerOn" />
+              <label class="teal-text darken3" for="timerOn">On</label>
+            </p>
+            <p class = "col s6">
+              <input name="group1" type="radio" data-status="false"  id="timerOff" />
+              <label class="teal-text darken3" for="timerOff">Off</label>
+            </p>
+          </form>
+          <div id="timerMain">
+              <label for="timer">Minutes:</label>
+              <!-- <div class="input-field inline"> -->
+                <input id="timer" type="text" class="validate" value="" placeholder="Enter number of minutes here">
+              <!-- </div> -->
+            <div class="row">
+              <button class="col s6 waves-effect waves-light btn" name="start" id="start" disabled>Start</button>
+              <button class="col s6 waves-effect waves-light btn" name="clearTimer" id="clearTimer" disabled>End</button>
             </div>
-          </li>
-          <li class"col s12 m6 l6">
-            <button ID="sessionKeyAccept" class="col s3 waves-effect waves-light btn">Join</button>
-            <div class="input-field inline col 9">
-              <input type="text" ID="sessionKeyAccept" value="" placeholder="Key goes here">
             </div>
-          </li>
-      </ul>
-      </header>
-    </nav> -->
-    <main class="row">
-      <section class="col s12 m4 l4">
-        <!-- User's writing -->
-        <div class "">
-          <h5 id="user_1_words">Word Count: 0</h5>
-        </div>
-        <textarea id="user_1_text" rows="100" cols="10"></textarea>
+          </div>
       </section>
-      <section class="col s12 m4 l4">
-        <h6 class="center-align">Timer</h6>
-        <form class = "center-align row" action="#">
-          <p class = "col s6">
-            <input checked name="group1" type="radio" id="timerOn" />
-            <label for="timerOn">On</label>
-          </p>
-          <p class = "col s6">
-            <input name="group1" type="radio" id="timerOff" />
-            <label for="timerOff">Off</label>
-          </p>
-        </form>
-            <input id="timer" type="text" class="validate" value="" placeholder="Enter time">
+      <div class="col s12 m4 l4 card light-grey darken-1 writing-card">
+        <div class="card-content black-text">
+          <span id="user_2_words" class="card-title">Word Count: 0</span>
+          <small id="user_2_text_prompt"></small>
+          <!-- <div class="writing-space">
+            <p id="user_2_text" contenteditable="true"></p>
+          </div> -->
+          <textarea id="user_2_text" class="userInputBox" rows="1000" cols="10"></textarea>
         </div>
-        <div class="row">
-          <button class="col s6 waves-effect waves-light btn" name="start" id="start" disabled>Start</button>
-          <button class="col s6 waves-effect waves-light btn" name="clearTimer" id="clearTimer" disabled>End</button>
-        </div>
-      </section>
-      <section class="col s12 m4 l4">
-        <!-- Partner's writing -->
-        <div class "">
-          <h5 id="user_2_words">Word Count: 0</h5>
-        </div>
-        <textarea id="user_2_text" name="name" rows="100" cols="10"></textarea>
-      </section>
+      </div>
     </main>
-    <footer class="page-footer">
-      <small class"center-align">
-        Copyright (c) 2017 Marlena Baker All Rights Reserved.
-      </small>
+    <footer class="page-footer white-text">
+      <div class="container">
+        <small>Copyright (c) 2017 Marlena Baker All Rights Reserved.</small>
+      </div>
     </footer>
-    <!-- JS Links -->
     <div>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" charset="utf-8"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
       <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js"></script>
       <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-database.js"></script>
       <script src="scripts/realTime.js" charset="utf-8"></script>
-      <!-- <script src="scripts/timer.js" charset="utf-8"></script>
-      <script src="scripts/main.js" charset="utf-8"></script> -->
+      <!-- <script src="scripts/timer.js" charset="utf-8"></script> -->
+      <!-- <script src="scripts/main.js" charset="utf-8"></script> -->
     </div>
   </body>
 </html>

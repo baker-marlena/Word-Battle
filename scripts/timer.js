@@ -1,12 +1,4 @@
-// ----- check if timer is active -- not working
-// function checkTimerStatus (){
-//   if ($("#timerOn").checked === true){
-//     console.log("Timer On!")
-//   }
-//   if ($("timerOff".checked === true)) {
-//     console.log("Timer off!")
-//   }
-// }
+
 
 // ----- runs timer -- working
 // function timerRun () {
