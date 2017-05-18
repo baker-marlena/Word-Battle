@@ -1,3 +1,5 @@
+// --------- START FIREBASE REALTIME DATABSE
+
 // -----init the real time database - working
   var config = {
      apiKey: "AIzaSyCoF8-O434tawCarh4eA4ICGnBElYpgYWE",
@@ -13,32 +15,19 @@ var userName;
 var otherUser;
 var timeInterval;
 
+// --------- USER 1 CREATE SESSION IN DATABASE
+
 // ----- create a new session - working
 $("#sessionKeyGenBut").click(function (){
-  let sessionKey = getSessionKey();
-  let sessionRef = database.ref(sessionKey);
-  currentSession = sessionRef;
+  let sessionKey = $("#sessionKeyGen").val();
+  currentSession = database.ref(sessionKey);
   userName = "user_1";
-  createNewSession(sessionRef);
+  createNewSession(currentSession);
   startSession(userName);
   $("#user_1_text_prompt").text("You'll type here.");
   $("#user_2_text_prompt").text("Your partner will type here.");
   $("#sessionGenSuccessMessage").text("Success! Refresh to create or join a different session.");
 });
-
-function getSessionKey (){
-  // ----- retrive session key - working
-  let newKey = $("#sessionKeyGen").val();
-  // ----- check if session exists in db - not working
-  // let dataBaseTest = database.equalTo(newKey);
-  // console.log(dataBaseTest);
-  // if (dataBaseTest !== undefined) {
-  //   alert ("That game already exists!");
-  // }
-//  else{
-    return newKey;
-//  }
-}
 
 // -----write a new session to the database - working
 function createNewSession (value){
@@ -59,6 +48,8 @@ function createNewSession (value){
   });
 }
 
+// --------- USER 2 JOIN SESSION
+
 // ----- Join session -- working
 $("#sessionKeyAcceptBut").click(function(){
   let keyInput = $("#sessionKeyAccept").val();
@@ -70,6 +61,8 @@ $("#sessionKeyAcceptBut").click(function(){
   $("#sessionJoinSuccessMessage").text("Success! Refresh to create or join a different session.");
 })
 
+// --------- ACTIVATE LISTENERS AND SET VALUES FOR SESSION START
+
 // ----- initialize session - working
 function startSession (name){
   setDisabledContent(name);
@@ -78,10 +71,53 @@ function startSession (name){
   listenToStart();
   checkTimerStatus();
   currentSession.update({startStatus:false});
-
 }
 
-// ----- check if timer is active and save to db-- not working
+// ----- make other user's content uneditable -- working
+function setDisabledContent (name){
+  if (name == "user_1") {
+    otherUser = "user_2";
+  }
+  if (name == "user_2") {
+    otherUser = "user_1";
+  }
+  $(`#${otherUser}_text`).prop('disabled', true);
+  $("#sessionKeyGenBut").prop('disabled', true);
+  $("#sessionKeyAcceptBut").prop('disabled', true);
+  };
+
+  // --------- USER TYPING
+
+  // ----- capture typing and store to db -- working
+  function listenForTyping (name){
+    console.log("Listing to you!")
+  $(`#${name}_text`).keyup(function() {
+    console.log("keyup val:"+this.value)
+    let update = {
+      [userName]: {
+        textInput: this.value,
+        wordCount: this.value.trim().split(/\s+/).length
+      }
+    };
+    $(`#${userName}_words`).text("Word Count: " +  this.value.split(" ").length);
+    currentSession.update(update);
+  })
+  }
+
+  // ----- listen for other typing and update from -- working
+  function listenForOther (name){
+    console.log("Listing to partner!")
+    currentSession.child(otherUser).on("value", function(snapshot){
+      const data = snapshot.val();
+      console.log (data.textInput);
+      $(`#${otherUser}_text`).text(data.textInput);
+      $(`#${otherUser}_words`).text("Word Count: " + data.wordCount);
+    })
+  }
+
+// --------- HIDING AND SHOWING TIMER
+
+// ----- check if timer is active and save to db -- working
 $("#timerOn").click(function(){
   currentSession.update({timer:true})
 })
@@ -90,7 +126,7 @@ $("#timerOff").click(function(){
   currentSession.update({timer:false})
 })
 
-// ----- listen for changes to timer status in db and hide timer on page
+// ----- listen for changes to timer status in db and hide timer on page - working
 function checkTimerStatus (){
   currentSession.child("timer").on("value", function(snapshot){
     let currentStatus = snapshot.val();
@@ -105,12 +141,13 @@ function checkTimerStatus (){
     })
   }
 
-// ----- Listen for start button -- working
+// --------- TIMER START AND END
+
+// ----- Listen for start button, check input value, and update database -- working
 $("#start").click(function(){
   let timerInput = Number($("#timer").val());
   // ----- Check that timer input is valid
-  console.log(timerInput);
-  if (timerInput < 0 || (timerInput % 1) !== 0){
+  if (timerInput <= 0 || timerInput > 180 ||(timerInput % 1) !== 0){
     alert ("Please enter a positive, whole number of minutes.");
   }
   else {
@@ -120,59 +157,57 @@ $("#start").click(function(){
   }
 });
 
-// ----- listen for end button -- working
+// ----- listen for end button and update database -- working
 $("#clearTimer").click(function(){
   currentSession.update({startStatus:false});
 })
 
-// ----- capture typing -- working
-function listenForTyping (name){
-  console.log("Listing to you!")
-$(`#${name}_text`).keypress(function() {
-  console.log("keyup val:"+this.value)
-  let update = {
-    [userName]: {
-      textInput: this.value,
-      wordCount: this.value.split(" ").length
-    }
-  };
-  $(`#${userName}_words`).text("Word Count: " +  this.value.split(" ").length);
-  currentSession.update(update);
-})
-}
-
-// ----- listen for other typing -- not working
-function listenForOther (name){
-  console.log("Listing to partner!")
-  currentSession.child(otherUser).on("value", function(snapshot){
-    const data = snapshot.val();
-    console.log (data.textInput);
-    $(`#${otherUser}_text`).text(data.textInput);
-    $(`#${otherUser}_words`).text("Word Count: " + data.wordCount);
+// ----- watching for the start and stop in the database -- working
+function listenToStart (){
+  console.log("Listening for db changes on 'start'");
+  currentSession.child('startStatus').on("value", function(snapshot){
+    let currentValue = snapshot.val();
+    console.log(currentValue);
+    let startButton = $("#start")
+    let endButton = $("#clearTimer")
+    // ----- looks up if the session is initalized
+    currentSession.child('initilized').once('value').then(function(snapshot){
+      let initStatus = snapshot.val();
+      // ----- if the session is started, start the timer and update the buttons
+      if (currentValue == true){
+        currentSession.update({timeLeft:0});
+        displayTimer();
+        startButton.prop('disabled', true);
+        endButton.prop('disabled', false);
+      }
+      // ----- if the session is over, clear the timer and update the buttons
+      if (currentValue == false){
+        // ----- skip unless the session is initialized
+        if (initStatus == true) {
+          clearInterval(timeInterval);
+          endTimer();
+        }
+        currentSession.update({timeLeft:0});
+        currentSession.child('timeLeft').off();
+        startButton.prop('disabled', false);
+        endButton.prop('disabled', true);
+      }
+    })
   })
 }
 
-// ----- Set
-// function listenForCount (name){
-//   currentSession.child(name).chile(wordCount).on("value", function(snapshot){
-//     $(`#${userName}_words`).textContent = "Word Count: " + this.value;
-//   })
-// }
+// ----- end the timer and update start value -- working
+function endTimer (){
+  // ----- set timer field to last entered value
+  let timerValueSet = currentSession.child('timeSet').once('value').then(function(snapshot){
+        $("#timer").val(snapshot.val());
+  })
+  Materialize.toast("Time's up!", 6000);
+}
 
-// ----- make other user's content uneditable -- working
-function setDisabledContent (name){
-  if (name == "user_1") {
-    otherUser = "user_2";
-  }
-  if (name == "user_2") {
-    otherUser = "user_1";
-  }
-  $(`#${otherUser}_text`).prop('contenteditable', false);
-  $("#sessionKeyGenBut").prop('disabled', true);
-  $("#sessionKeyAcceptBut").prop('disabled', true);
-  };
+// --------- TIMER
 
-  // ----- Database Timer -- working
+  // ----- Timer Iterates and writes to db, when 0, ends -- working
   function timerRun () {
     let secs;
     var timerAmmount = currentSession.child('timeSet').once('value').then(function (snapshot){
@@ -181,9 +216,9 @@ function setDisabledContent (name){
     console.log(secs);
     // actual timer intervals
     timeInterval = setInterval(function(){
-      secs--;
       console.log("counting:"+secs);
       currentSession.update({timeLeft:`${calculateMintues(secs)}:${calculateSeconds(secs)}`});
+      secs--;
       // timer runs out
       if(secs == 0){
         currentSession.update({startStatus:false});
@@ -195,51 +230,6 @@ function setDisabledContent (name){
   function displayTimer () {
     currentSession.child('timeLeft').on("value", function(snapshot){
       $("#timer").val(snapshot.val());
-    })
-  }
-
-  // ----- end the timer and update start value -- working
-  function endTimer (){
-    console.log("Checking timer end:" + timeInterval);
-
-    // ----- set timer field to last entered value
-    let timerValueSet = currentSession.child('timeSet').once('value').then(function(snapshot){
-          $("#timer").val(snapshot.val());
-    })
-    Materialize.toast("Time's up!", 6000);
-  }
-
-  // ----- watching for the start and stop -- working
-  function listenToStart (){
-    console.log("Listening for db changes on 'start'");
-    currentSession.child('startStatus').on("value", function(snapshot){
-      let currentValue = snapshot.val();
-      console.log(currentValue);
-      let startButton = $("#start")
-      let endButton = $("#clearTimer")
-      // ----- looks up if the session is initalized
-      currentSession.child('initilized').once('value').then(function(snapshot){
-        let initStatus = snapshot.val();
-        // ----- if the session is started, start the timer and update the buttons
-        if (currentValue == true){
-          currentSession.update({timeLeft:0});
-          displayTimer();
-          startButton.prop('disabled', true);
-          endButton.prop('disabled', false);
-        }
-        // ----- if the session is over, clear the timer and update the buttons
-        if (currentValue == false){
-          // ----- skip unless the session is initialized
-          if (initStatus == true) {
-            clearInterval(timeInterval);
-            endTimer();
-          }
-          currentSession.update({timeLeft:0});
-          currentSession.child('timeLeft').off();
-          startButton.prop('disabled', false);
-          endButton.prop('disabled', true);
-        }
-      })
     })
   }
 
