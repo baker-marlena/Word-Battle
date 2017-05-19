@@ -1,10 +1,8 @@
-// --------- START FIREBASE REALTIME DATABSE
-
 // -----init the real time database - working
-  var config = {
-     apiKey: "AIzaSyCoF8-O434tawCarh4eA4ICGnBElYpgYWE",
-     databaseURL: "https://q1-project-1ce2b.firebaseio.com/",
-   };
+var config = {
+  apiKey: "AIzaSyCoF8-O434tawCarh4eA4ICGnBElYpgYWE",
+  databaseURL: "https://q1-project-1ce2b.firebaseio.com/",
+  };
 
 firebase.initializeApp(config);
 
@@ -15,18 +13,15 @@ var userName;
 var otherUser;
 var timeInterval;
 
-// --------- USER 1 CREATE SESSION IN DATABASE
+// --------- CREATE SESSION
 
-// ----- create a new session - working
+// ----- take the session key and start the functions for a new session - working
 $("#sessionKeyGenBut").click(function (){
   let sessionKey = $("#sessionKeyGen").val();
   currentSession = database.ref(sessionKey);
   userName = "user_1";
   createNewSession(currentSession);
   startSession(userName);
-  $("#user_1_text_prompt").text("You'll type here.");
-  $("#user_2_text_prompt").text("Your partner will type here.");
-  $("#sessionGenSuccessMessage").text("Success! Refresh to create or join a different session.");
 });
 
 // -----write a new session to the database - working
@@ -46,85 +41,83 @@ function createNewSession (value){
     startStatus: false,
     initilized: false
   });
-}
+};
 
-// --------- USER 2 JOIN SESSION
+// --------- JOIN A SESSION
 
-// ----- Join session -- working
+// ----- join session -- working
 $("#sessionKeyAcceptBut").click(function(){
   let keyInput = $("#sessionKeyAccept").val();
   currentSession = database.ref(keyInput);
   userName = "user_2";
   startSession(userName);
-  $("#user_2_text_prompt").text("You'll type here.");
-  $("#user_1_text_prompt").text("Your partner will type here.");
-  $("#sessionJoinSuccessMessage").text("Success! Refresh to create or join a different session.");
-})
+});
 
 // --------- ACTIVATE LISTENERS AND SET VALUES FOR SESSION START
 
 // ----- initialize session - working
 function startSession (name){
-  setDisabledContent(name);
+  setPageContent(name);
   listenForTyping(name);
   listenForOther(name);
   listenToStart();
   checkTimerStatus();
   currentSession.update({startStatus:false});
-}
+};
 
-// ----- make other user's content uneditable -- working
-function setDisabledContent (name){
+// ----- update the page to reflect the user's status
+function setPageContent (name){
   if (name == "user_1") {
     otherUser = "user_2";
+    $("#sessionGenSuccessMessage").text("Success! Refresh to create or join a different session.");
   }
   if (name == "user_2") {
     otherUser = "user_1";
+    $("#sessionJoinSuccessMessage").text("Success! Refresh to create or join a different session.");
   }
   $(`#${otherUser}_text`).prop('disabled', true);
   $("#sessionKeyGenBut").prop('disabled', true);
   $("#sessionKeyAcceptBut").prop('disabled', true);
-  };
+  $(`#${name}_text_prompt`).text("You'll type here.");
+  $(`#${otherUser}_text_prompt`).text("Your partner will type here.");
+};
 
   // --------- USER TYPING
 
   // ----- capture typing and store to db -- working
-  function listenForTyping (name){
-    console.log("Listing to you!")
+function listenForTyping (name){
   $(`#${name}_text`).keyup(function() {
-    console.log("keyup val:"+this.value)
-    let update = {
-      [userName]: {
-        textInput: this.value,
-        wordCount: this.value.trim().split(/\s+/).length
+  let wordCountValue = this.value.trim().split(/\s+/).length
+  let update = {
+    [userName]: {
+      textInput: this.value,
+      wordCount: wordCountValue
       }
     };
-    $(`#${userName}_words`).text("Word Count: " +  this.value.split(" ").length);
-    currentSession.update(update);
-  })
-  }
+  $(`#${userName}_words`).text("Word Count: " +  wordCountValue);
+  currentSession.update(update);
+  });
+};
 
   // ----- listen for other typing and update from -- working
-  function listenForOther (name){
-    console.log("Listing to partner!")
-    currentSession.child(otherUser).on("value", function(snapshot){
-      const data = snapshot.val();
-      console.log (data.textInput);
-      $(`#${otherUser}_text`).text(data.textInput);
-      $(`#${otherUser}_words`).text("Word Count: " + data.wordCount);
-    })
-  }
+function listenForOther (name){
+  currentSession.child(otherUser).on("value", function(snapshot){
+    const data = snapshot.val();
+    $(`#${otherUser}_text`).text(data.textInput);
+    $(`#${otherUser}_words`).text("Word Count: " + data.wordCount);
+  });
+};
 
 // --------- HIDING AND SHOWING TIMER
 
 // ----- check if timer is active and save to db -- working
 $("#timerOn").click(function(){
   currentSession.update({timer:true})
-})
+});
 
 $("#timerOff").click(function(){
   currentSession.update({timer:false})
-})
+});
 
 // ----- listen for changes to timer status in db and hide timer on page - working
 function checkTimerStatus (){
@@ -133,13 +126,13 @@ function checkTimerStatus (){
     if (currentStatus == false){
       $("#timerMain").css("display","none");
       $("#timerOff").prop("checked",true);
-      }
+    };
     if (currentStatus == true) {
       $("#timerMain").css("display","initial");
       $("#timerOn").prop("checked",true);
-      }
-    })
-  }
+    };
+  });
+};
 
 // --------- TIMER START AND END
 
@@ -147,27 +140,28 @@ function checkTimerStatus (){
 $("#start").click(function(){
   let timerInput = Number($("#timer").val());
   // ----- Check that timer input is valid
-  if (timerInput <= 0 || timerInput > 180 ||(timerInput % 1) !== 0){
+  if (timerInput <= 0 || (timerInput % 1) !== 0){
     alert ("Please enter a positive, whole number of minutes.");
+  }
+  if(timerInput > 120){
+    alert ("Two hours is the limit. Don't forget to take breaks!");
   }
   else {
     currentSession.update({startStatus:true,timeSet:timerInput});
     currentSession.update({initilized:true});
     timerRun();
-  }
+  };
 });
 
 // ----- listen for end button and update database -- working
 $("#clearTimer").click(function(){
   currentSession.update({startStatus:false});
-})
+});
 
 // ----- watching for the start and stop in the database -- working
 function listenToStart (){
-  console.log("Listening for db changes on 'start'");
   currentSession.child('startStatus').on("value", function(snapshot){
     let currentValue = snapshot.val();
-    console.log(currentValue);
     let startButton = $("#start")
     let endButton = $("#clearTimer")
     // ----- looks up if the session is initalized
@@ -200,7 +194,7 @@ function listenToStart (){
 function endTimer (){
   // ----- set timer field to last entered value
   let timerValueSet = currentSession.child('timeSet').once('value').then(function(snapshot){
-        $("#timer").val(snapshot.val());
+    $("#timer").val(snapshot.val());
   })
   Materialize.toast("Time's up!", 6000);
 }
@@ -208,41 +202,39 @@ function endTimer (){
 // --------- TIMER
 
   // ----- Timer Iterates and writes to db, when 0, ends -- working
-  function timerRun () {
-    let secs;
-    var timerAmmount = currentSession.child('timeSet').once('value').then(function (snapshot){
-      secs = snapshot.val()*60;
-    });
-    console.log(secs);
-    // actual timer intervals
-    timeInterval = setInterval(function(){
-      console.log("counting:"+secs);
-      currentSession.update({timeLeft:`${calculateMintues(secs)}:${calculateSeconds(secs)}`});
-      secs--;
-      // timer runs out
-      if(secs == 0){
-        currentSession.update({startStatus:false});
-        }
-      }, 1000);
+function timerRun () {
+  let secs;
+  var timerAmmount = currentSession.child('timeSet').once('value').then(function (snapshot){
+    secs = snapshot.val()*60;
+  });
+  // actual timer intervals
+  timeInterval = setInterval(function(){
+    currentSession.update({timeLeft:`${calculateMintues(secs)}:${calculateSeconds(secs)}`});
+    secs--;
+    // timer runs out
+    if(secs == 0){
+      currentSession.update({startStatus:false});
+    };
+  }, 1000);
+};
+
+// ----- listen to database for timer updates and update user's page -- working
+function displayTimer () {
+  currentSession.child('timeLeft').on("value", function(snapshot){
+    $("#timer").val(snapshot.val());
+  });
+};
+
+// calculate remaining minutes -- working
+function calculateMintues(value){
+  return Math.floor(value/60);
+};
+
+//caluclate remaining seconds -- working
+function calculateSeconds(value){
+  let displaySeconds = value-(Math.floor(value/60)*60);
+  if (displaySeconds < 10) {
+    return `0${displaySeconds}`;
   };
-
-  // ----- listen to database for timer updates and update user's page -- working
-  function displayTimer () {
-    currentSession.child('timeLeft').on("value", function(snapshot){
-      $("#timer").val(snapshot.val());
-    })
-  }
-
-  // calculate remaining minutes -- working
-  function calculateMintues(value){
-    return Math.floor(value/60);
-  }
-
-  //caluclate remaining seconds -- working
-  function calculateSeconds(value){
-    let displaySeconds = value-(Math.floor(value/60)*60);
-    if (displaySeconds < 10) {
-      return `0${displaySeconds}`;
-    }
-    return displaySeconds;
-  }
+  return displaySeconds;
+};

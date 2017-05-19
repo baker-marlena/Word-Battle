@@ -11,9 +11,10 @@
     <title>Word Race</title>
   </head>
   <body class = "container">
-    <header class = "">
+    <header>
       <h4 class = "center-align">Word Race<i class="material-icons small">mode_edit</i></h4>
     </header>
+    <!-- User Create Session Field -->
     <div class="row">
       <div class="row col s12 m6 l4 left">
         <button ID="sessionKeyGenBut" class="col s4 waves-effect waves-light btn">Create</button>
@@ -22,6 +23,7 @@
           <small id="sessionGenSuccessMessage"></small>
         </div>
       </div>
+      <!-- User Join Session Field -->
       <div class="row col s12 m6 l4 right">
         <button ID="sessionKeyAcceptBut" class="col s4 waves-effect waves-light btn">Join</button>
         <div class="input-field inline col 8">
@@ -31,6 +33,7 @@
       </div>
     </div>
     <main class = "row">
+      <!-- User 1 Space -->
       <div class="col s12 m12 l4 card light-grey darken-1">
         <div class="card-content black-text">
           <span id="user_1_words" class="card-title">Word Count: 0</span>
@@ -41,8 +44,10 @@
           <textarea id="user_1_text" class="userInputBox" rows="1000" cols="10"></textarea>
         </div>
       </div>
+      <!-- Center Section -->
       <section class="card blue-grey lighten-5 col s12 m12 l4">
         <div class="card-content teal-text darken3">
+          <!-- Instructions -->
           <ol>
             <li>One user should create a session.</li>
             <li>The other user should get the session name and use it to join that session.</li>
@@ -50,6 +55,7 @@
             <li>Session names may be reused, but will clear the existing one.</li>
             <li>Happy writing!</li>
           </ol>
+          <!-- Timer -->
           <span class="card-title">Timer</span>
           <form id="timerStatusSet" class = "center-align row" action="#">
             <p class = "col s6">
@@ -73,6 +79,7 @@
             </div>
           </div>
       </section>
+      <!-- User 2 Space -->
       <div class="col s12 m12 l4 card light-grey darken-1 writing-card">
         <div class="card-content black-text">
           <span id="user_2_words" class="card-title">Word Count: 0</span>

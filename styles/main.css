@@ -1,10 +1,5 @@
-/*.col {
-  background-color: red !important;
-}*/
-
 body {
   font-family: 'Quicksand', sans-serif;
-  /*height:100vh !important;*/
   margin: 0px;
   display: flex;
   min-height: 100vh;
@@ -13,6 +8,14 @@ body {
 .container{
     width: 90vw !important;
 }
+
+/*Header*/
+
+h4 {
+  font-family: 'Arvo', serif;
+}
+
+/*Content*/
 
 main {
   /*height: 70%;*/
@@ -23,7 +26,6 @@ main {
 .writing-card{
   min-height: 100%;
   overflow:none;
-  overflow-x: none;
 }
 
 .userInputBox {
@@ -34,18 +36,7 @@ main {
   max-width: 100%;
 }
 
-.userInputBox :focus {
-  border: 3px solid #26a69a;
-}
-
-h4 {
-  font-family: 'Arvo', serif;
-
-}
-
-.header-div {
-  display:inline-block !important;
-}
+/*Media Queries*/
 
 @media (max-width: 992px) {
   .userInputBox {
