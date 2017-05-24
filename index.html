@@ -34,14 +34,14 @@
     </div>
     <main class = "row">
       <!-- User 1 Space -->
-      <div class="col s12 m12 l4 card light-grey darken-1">
-        <div class="card-content black-text">
+      <div class="col s12 m12 l4 card orange accent-1">
+        <div class="card-content teal-text darken-3">
           <span id="user_1_words" class="card-title">Word Count: 0</span>
           <small id="user_1_text_prompt"></small>
           <!-- <div class="writing-space">
             <p id="user_1_text" contenteditable="true"></p>
           </div> -->
-          <textarea id="user_1_text" class="userInputBox" rows="1000" cols="10"></textarea>
+          <textarea id="user_1_text" class="userInputBox" rows="1000" cols="10" disabled></textarea>
         </div>
       </div>
       <!-- Center Section -->
@@ -59,39 +59,59 @@
           <span class="card-title">Timer</span>
           <form id="timerStatusSet" class = "center-align row" action="#">
             <p class = "col s6">
-              <input checked name="group1" type="radio" data-status="true" id="timerOn" />
+              <input disabled checked name="group1" type="radio" data-status="true" id="timerOn" />
               <label class="teal-text darken3" for="timerOn">On</label>
             </p>
             <p class = "col s6">
-              <input name="group1" type="radio" data-status="false"  id="timerOff" />
+              <input disabled name="group1" type="radio" data-status="false"  id="timerOff" />
               <label class="teal-text darken3" for="timerOff">Off</label>
             </p>
           </form>
           <div id="timerMain">
               <label for="timer">Minutes:</label>
               <!-- <div class="input-field inline"> -->
-                <input id="timer" type="text" class="validate" value="" placeholder="Enter number of minutes here">
+                <input id="timer" type="text" class="validate" value="" disabled placeholder="Enter number of minutes here">
               <!-- </div> -->
-            <div class="row">
-              <button class="col s6 waves-effect waves-light btn" name="start" id="start" disabled>Start</button>
-              <button class="col s6 waves-effect waves-light btn" name="clearTimer" id="clearTimer" disabled>End</button>
             </div>
-            </div>
+            <!--  -->
+            <!--  -->
+            <span class="card-title">Word Count</span>
+            <form id="counterStatusSet" class = "center-align row" action="#">
+              <p class = "col s6">
+                <input disabled checked name="group2" type="radio" data-status="true" id="counterOn" />
+                <label class="teal-text darken3" for="counterOn">On</label>
+              </p>
+              <p class = "col s6">
+                <input disabled name="group2" type="radio" data-status="false"  id="counterOff" />
+                <label class="teal-text darken3" for="counterOff">Off</label>
+              </p>
+            </form>
+            <div id="counterMain">
+                <label for="counter">Words:</label>
+                <!-- <div class="input-field inline"> -->
+                  <input id="counter" type="text" class="validate" value="" disabled placeholder="Enter number of words here">
+                <!-- </div> -->
+                <!--  -->
+                <!--  -->
+          </div>
+          <div id="startEndMain" class="row">
+            <button class="col s6 waves-effect waves-light btn" name="start" id="start" disabled>Start</button>
+            <button class="col s6 waves-effect waves-light btn" name="clearTimer" id="clearTimer" disabled>End</button>
           </div>
       </section>
       <!-- User 2 Space -->
-      <div class="col s12 m12 l4 card light-grey darken-1 writing-card">
-        <div class="card-content black-text">
+      <div class="col s12 m12 l4 card orange accent-1 writing-card">
+        <div class="card-content teal-text darken-3">
           <span id="user_2_words" class="card-title">Word Count: 0</span>
           <small id="user_2_text_prompt"></small>
           <!-- <div class="writing-space">
             <p id="user_2_text" contenteditable="true"></p>
           </div> -->
-          <textarea id="user_2_text" class="userInputBox" rows="1000" cols="10"></textarea>
+          <textarea id="user_2_text" class="userInputBox" rows="1000" cols="10" disabled></textarea>
         </div>
       </div>
     </main>
-    <footer class="page-footer white-text">
+    <footer class="page-footer white-text teal darken-3">
       <div class="container">
         <small>Copyright (c) 2017 Marlena Baker All Rights Reserved.</small>
       </div>
@@ -101,9 +121,12 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
       <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js"></script>
       <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-database.js"></script>
+      <script src="scripts/RealTimeInit.js" charset="utf-8"></script>
+      <script src="scripts/timer.js" charset="utf-8"></script>
+      <script src="scripts/counter.js" charset="utf-8"></script>
+      <script src="scripts/textArea.js" charset="utf-8"></script>
+      <script src="scripts/sessionInit.js" charset="utf-8"></script>
       <script src="scripts/realTime.js" charset="utf-8"></script>
-      <!-- <script src="scripts/timer.js" charset="utf-8"></script> -->
-      <!-- <script src="scripts/main.js" charset="utf-8"></script> -->
     </div>
   </body>
 </html>
