@@ -15,3 +15,8 @@ var timeInterval;
 var timerSet;
 var counterSet;
 var sessionActive = false;
+var user_1_wordcount;
+var user_2_wordcount;
+var wordCountGoal;
+var counterInput;
+var standingWordCount;

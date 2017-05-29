@@ -1,17 +1,15 @@
 // ----- check if timer is active and save to db -- working
 $("#timerOn").click(function(){
-  currentSession.update({timer:true})
-  startButtonDispay();
+  currentSession.child("timer").update({status:true})
 });
 
 $("#timerOff").click(function(){
-  currentSession.update({timer:false})
-  startButtonDispay();
+  currentSession.child("timer").update({status:false})
 });
 
 // ----- listen for changes to timer status in db and hide timer on page - working
 function checkTimerStatus (){
-  currentSession.child("timer").on("value", function(snapshot){
+  currentSession.child("timer").child("status").on("value", function(snapshot){
     let currentStatus = snapshot.val();
     if (currentStatus == false){
       $("#timerMain").css("display","none");
@@ -28,41 +26,26 @@ function checkTimerStatus (){
   });
 };
 
-// --------- TIMER START AND END
-
-// ----- Listen for start button, check input value, and update database -- working
-$("#start").click(function(){
-  if (timerSet = true) {
-    timerCheck();
-  }
-  if (counterSet = true) {
-    counterCheck();
-  }
-});
-
-
-
-// ----- listen for end button and update database -- working
-$("#clearTimer").click(function(){
-  currentSession.update({startStatus:false});
-});
-
 // ------ if timer is on and input is valid, update db and run timer
 function  timerCheck () {
   let timerInput = Number($("#timer").val());
   // ----- Check that timer input is valid
   if (timerInput <= 0 || (timerInput % 1) !== 0){
     alert ("Please enter a positive, whole number of minutes.");
-    return
+    return false;
   }
   if(timerInput > 120){
     alert ("Two hours is the limit. Don't forget to take breaks!");
-    return
+    return false;
   }
   else {
     currentSession.update({startStatus:true,timeSet:timerInput});
     currentSession.update({initilized:true});
+    currentSession.update({timeLeft:0});
+    $("#timer").prop('disabled',true);
     timerRun();
+    displayTimer();
+    return true;
   };
 };
 
@@ -91,12 +74,18 @@ function displayTimer () {
 };
 
 // ----- end the timer and update start value -- working
-function endTimer (){
+function endRound (){
   // ----- set timer field to last entered value
-  let timerValueSet = currentSession.child('timeSet').once('value').then(function(snapshot){
-    $("#timer").val(snapshot.val());
-  })
-  Materialize.toast("Time's up!", 6000);
+  if (timerSet == true) {
+    currentSession.child('timeSet').once('value').then(function(snapshot){
+      $("#timer").val(snapshot.val());
+    })
+    Materialize.toast("Time's up!", 6000);
+  }
+  if (counterSet == true) {
+    $("#counter").val(wordCountGoal);
+  }
+
 }
 
 // calculate remaining minutes -- working
