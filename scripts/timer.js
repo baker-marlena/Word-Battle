@@ -16,12 +16,15 @@ function checkTimerStatus (){
       $("#timerOff").prop("checked",true);
       timerSet = false;
       startButtonDispay();
+      return false;
     };
     if (currentStatus == true) {
       $("#timerMain").css("display","initial");
       $("#timerOn").prop("checked",true);
       timerSet = true;
+      console.log(timerSet);
       startButtonDispay();
+      return false;
     };
   });
 };

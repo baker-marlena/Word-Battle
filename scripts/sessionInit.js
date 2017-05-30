@@ -97,13 +97,19 @@ function listenToStart (){
     // ----- looks up if the session is initalized
     currentSession.child('initilized').once('value').then(function(snapshot){
       let initStatus = snapshot.val();
+
       // ----- if the session is started, check  timer and counter status, update the buttons
       if (currentValue == true){
+        let counterInput = Number($("#counter").val());
+        var counterOkay = checkCounter(counterInput);
         if (timerSet == true){
           var timerOkay = timerCheck();
         }
         if (counterSet == true){
-          var counterOkay = checkCounter();
+          currentSession.child("counter").update({countSet:counterInput})
+          getCounterValue();
+          displayCounter();
+          $("#counter").prop('disabled',true);
         }
         if (counterOkay == true && timerOkay == true){
           startButton.prop('disabled',true);
@@ -118,12 +124,14 @@ function listenToStart (){
           endRound();
         }
         if (timerSet == true){
-          currentSession.update({timeLeft:0});
+          currentSession.child.("timer").update({timeLeft:0});
           currentSession.child('timeLeft').off();
           $("#timer").prop('disabled',false);
         }
         if (counterSet == true){
-
+          $("counter").prop('disabled',false);
+          currentSession.child("user_1").child('wordGoalProgress').off();
+          currentSession.child("user_2").child("wordGoalProgress").off();
         }
         startButton.prop('disabled',false);
         endButton.prop('disabled',true);
@@ -136,8 +144,18 @@ function listenToStart (){
 
 // ----- Listen for start button, check input values, and update database -- working
 $("#start").click(function(){
-  currentSession.update({startStatus:true,initilized:true});
+  inputChecks();
 });
+
+function inputChecks(){
+  let counterOkay = checkCounterStatus();
+  let timerOkay = checkTimerStatus();
+  if ( counterOkay == true || timerOkay == true){
+    currentSession.update({startStatus:true,initilized:true});
+    console.log("Checks came back")
+  }
+}
+
 
 // ----- listen for end button and update database -- working
 $("#clearTimer").click(function(){
@@ -148,6 +166,8 @@ function startButtonDispay () {
   if (timerSet == false && counterSet == false) {
     $("#startEndMain").css('display','none');
   }
-  if (timerSet == true || counterSet == true)
-    $("#startEndMain").css('dispaly','initial');
+  if (timerSet == true || counterSet == true){
+    $("#startEndMain").css('display','initial');
+    console.log("I should be displaying the buttons")
+  }
 }
