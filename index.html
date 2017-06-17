@@ -71,8 +71,23 @@
               <label for="timer">Minutes:</label>
               <!-- <div class="input-field inline"> -->
                 <input id="timer" type="text" class="validate" value="" placeholder="Enter number of minutes here">
+                <span class="card-title">Counter</span>
+                <form id="counterStatusSet" class = "center-align row" action="#">
+                  <p class = "col s6">
+                    <input checked name="group1" type="radio" data-status="true" id="counterOn" />
+                    <label class="teal-text darken3" for="counterOn">On</label>
+                  </p>
+                  <p class = "col s6">
+                    <input name="group1" type="radio" data-status="false"  id="counterOff" />
+                    <label class="teal-text darken3" for="counterOff">Off</label>
+                  </p>
+                </form>
+                <div id="timerMain">
+                    <label for="counter">Minutes:</label>
+                    <!-- <div class="input-field inline"> -->
+                      <input id="counter" type="text" class="validate" value="" placeholder="Enter number of words here">
               <!-- </div> -->
-            <div class="row">
+            <div class="row" id="startEndMain">
               <button class="col s6 waves-effect waves-light btn" name="start" id="start" disabled>Start</button>
               <button class="col s6 waves-effect waves-light btn" name="clearTimer" id="clearTimer" disabled>End</button>
             </div>

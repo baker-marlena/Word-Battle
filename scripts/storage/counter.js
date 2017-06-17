@@ -7,48 +7,39 @@ $("#counterOff").click(function(){
 });
 
 // ----- listen for changes to timer status in db and hide timer on page - working
-function checkCounterStatus (){
-  currentSession.child("counter").child("status").on("value", function(snapshot){
-    let currentStatus = snapshot.val();
-    if (currentStatus == false){
-      $("#counterMain").css("display","none");
-      $("#counterOff").prop("checked",true);
-      counterSet = false;
-      startButtonDispay();
-      return false;
-    };
-    if (currentStatus == true) {
-      $("#counterMain").css("display","initial");
-      $("#counterOn").prop("checked",true);
-      counterSet = true;
-       console.log(counterSet);
-      startButtonDispay();
-      return true;
-    };
-  });
-};
+
 
 // -- see if counter value is valid
 function checkCounter (value) {
-  if (value <= 0 || typeof value !== "number") {
-    alert("Please enter a positive, whole number of words.");
-    return false;
-  }
-  if (value > 10000) {
-    alert("The limit for one round is 5,000 words. Remember to take breaks!");
-    return false;
-  }
-  else {
-    return true;
+  switch (true){
+    case value <= 0 :
+      alert("Please enter a positive, whole number of words.");
+      return false;
+      break;
+    case typeof value !== "number" :
+      alert("Please enter a positive, whole number of words.");
+      return false;
+      break;
+    case timerInput % 1 !== 0 :
+      alert("Please enter a positive, whole number of words.");
+      return false;
+      break;
+    case value > 10000 :
+      alert("The limit for one round is 5,000 words. Remember to take breaks!");
+      return false;
+      break;
+    default:
+      return true;
   }
 }
 
-
 function getCounterValue (){
-  currentSession.child("counter").child("counntSet").once("value", function(snapshot) {
+  let countSetDB = currentSession.child("counter").child("counntSet");
+  let wordCountDB = currentSession.child(userName).child("wordCount");
+  countSetDB.once("value", function(snapshot) {
     wordCountGoal = snapshot.val();
   })
-  currentSession.child(userName).child("wordCount").once("value", function(snapshot){
+  wordCountDB.once("value", function(snapshot){
     standingWordCount = snapshot.value;
   })
 }

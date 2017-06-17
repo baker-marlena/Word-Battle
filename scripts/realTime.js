@@ -23,6 +23,16 @@ $("#timerOff").click(function(){
   currentSession.update({timer:false})
 });
 
+$("#counterOn").click(function(){
+  let counterDB = currentSession.child("counter");
+  counterDB.update({status:true});
+});
+
+$("#counterOff").click(function(){
+  let counterDB = currentSession.child("counter");
+  counterDB.update({status:false})
+});
+
 $("#start").click(timerCheck);
 
 // ----- listen for end button and update database -- working

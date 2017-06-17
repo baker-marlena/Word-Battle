@@ -9,6 +9,10 @@ function createNewSession (value){
       textInput:"",
       wordCount:0,
     },
+    counter: {
+      status: false,
+      wordsSet: 0,
+    },
     timer: true,
     timeSet: 0,
     timeLeft: 0,
