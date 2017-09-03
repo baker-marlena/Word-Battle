@@ -122,6 +122,7 @@ $("#timerOff").click(function(){
 // ----- listen for changes to timer status in db and hide timer on page - working
 function checkTimerStatus (){
   currentSession.child("timer").on("value", function(snapshot){
+    console.log(snapshot);
     let currentStatus = snapshot.val();
     if (currentStatus == false){
       $("#timerMain").css("display","none");
