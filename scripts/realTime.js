@@ -69,18 +69,20 @@ function startSession (name){
 function setPageContent (name){
   if (name == "user_1") {
     otherUser = "user_2";
-    $("#sessionGenSuccessMessage").text("Success! Refresh to create or join a different session.");
+    successMessage("#sessionGenSuccessMessage");
   }
   if (name == "user_2") {
     otherUser = "user_1";
-    $("#sessionJoinSuccessMessage").text("Success! Refresh to create or join a different session.");
+    successMessage("#sessionJoinSuccessMessage");
   }
-  $(`#${otherUser}_text`).prop('disabled', true);
-  $("#sessionKeyGenBut").prop('disabled', true);
-  $("#sessionKeyAcceptBut").prop('disabled', true);
+  enable(`#${otherUser}_text`);
+  disable('#sessionKeyGenBut');
+  disable('#sessionKeyAcceptBut');
   $(`#${name}_text_prompt`).text("You'll type here.");
   $(`#${otherUser}_text_prompt`).text("Your partner will type here.");
 };
+
+
 
   // --------- USER TYPING
 
@@ -122,7 +124,6 @@ $("#timerOff").click(function(){
 // ----- listen for changes to timer status in db and hide timer on page - working
 function checkTimerStatus (){
   currentSession.child("timer").on("value", function(snapshot){
-    console.log(snapshot);
     let currentStatus = snapshot.val();
     if (currentStatus == false){
       $("#timerMain").css("display","none");
@@ -172,8 +173,8 @@ function listenToStart (){
       if (currentValue == true){
         currentSession.update({timeLeft:0});
         displayTimer();
-        startButton.prop('disabled', true);
-        endButton.prop('disabled', false);
+        disable(startButton);
+        enable(endButton);
       }
       // ----- if the session is over, clear the timer and update the buttons
       if (currentValue == false){
@@ -184,8 +185,8 @@ function listenToStart (){
         }
         currentSession.update({timeLeft:0});
         currentSession.child('timeLeft').off();
-        startButton.prop('disabled', false);
-        endButton.prop('disabled', true);
+        enable(startButton);
+        disable(endButton);
       }
     })
   })
@@ -239,3 +240,17 @@ function calculateSeconds(value){
   };
   return displaySeconds;
 };
+
+
+// DRY refactoring
+function disable(elementName){
+  $(elementName).prop('disabled', true);
+}
+
+function enable(elementName){
+  $(elementName).prop('', false);
+}
+
+function successMessage(elementName){
+  $(elementName).text("Success! Refresh to create or join a different session.");
+}
