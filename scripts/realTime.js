@@ -1,9 +1,5 @@
 // -----init the real time database - working
-var config = {
-  apiKey: "AIzaSyCoF8-O434tawCarh4eA4ICGnBElYpgYWE",
-  databaseURL: "https://q1-project-1ce2b.firebaseio.com/",
-  };
-
+import config from './../config.js';
 firebase.initializeApp(config);
 
 // ---- create global vars
